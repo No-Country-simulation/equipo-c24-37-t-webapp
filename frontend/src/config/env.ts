@@ -1,35 +1,82 @@
-import {z} from "zod";
+import { z } from "zod";
 
-const EnvSchema = z.object({
+const ServerEnvSchema = z.object({
+    JWT_EXPIRE_TIME: z.coerce.number(),
+    COOKIE_NAME: z.string(),
+});
+
+const ClientEnvSchema = z.object({
     API_URL: z.string(),
 });
 
-const createEnv = () => {
+type ServerEnvValues = z.infer<typeof ServerEnvSchema>;
+type ClientEnvValues = z.infer<typeof ClientEnvSchema>;
 
-    const envVars = {
-        API_URL: process.env.NEXT_PUBLIC_API_URL,
-    }
+function createServerEnv() {
+    const serverEnv = {
+        JWT_EXPIRE_TIME: process.env.JWT_EXPIRE_TIME,
+        COOKIE_NAME: process.env.COOKIE_NAME,
+    };
 
-    const parsedEnv = EnvSchema.safeParse(envVars);
-
+    const parsedEnv = ServerEnvSchema.safeParse(serverEnv);
     if (!parsedEnv.success) {
-        throw new Error((
-            `Invalid environment variables: 
+        throw new Error(
+            `Invalid server environment variables: 
             ${Object.entries(parsedEnv.error.flatten().fieldErrors)
                 .map(([key, value]) => ` - ${key}: ${value}`)
                 .join('\n')}`
-        ))
+        );
     }
-
-    return parsedEnv.data ?? {};
+    return parsedEnv.data;
 }
 
-type EnvKeys = keyof z.infer<typeof EnvSchema>;
-const ENV = createEnv();
+function createClientEnv() {
+    const clientEnv = {
+        API_URL: process.env.NEXT_PUBLIC_API_URL,
+    };
 
-export const env = (key: EnvKeys) => {
-    if (!ENV[key]) {
-        throw new Error(`Missing environment variable: ${key}`);
+    const parsedEnv = ClientEnvSchema.safeParse(clientEnv);
+    if (!parsedEnv.success) {
+        throw new Error(
+            `Invalid client environment variables: 
+            ${Object.entries(parsedEnv.error.flatten().fieldErrors)
+                .map(([key, value]) => ` - ${key}: ${value}`)
+                .join('\n')}`
+        );
     }
-    return ENV[key];
+    return parsedEnv.data;
 }
+
+// Server-side environment utility
+const SERVER_ENV = createServerEnv();
+export const serverEnv = <K extends keyof ServerEnvValues>(
+    key: K,
+    fallback?: ServerEnvValues[K]
+): ServerEnvValues[K] => {
+    if (typeof window !== 'undefined') {
+        throw new Error('Server environment variables cannot be accessed on the client side');
+    }
+
+    if (!SERVER_ENV[key]) {
+        if (fallback === undefined) {
+            throw new Error(`Missing server environment variable: ${key}`);
+        }
+        return fallback;
+    }
+    return SERVER_ENV[key];
+};
+
+// Client-side environment utility
+const CLIENT_ENV = createClientEnv();
+export const clientEnv = <K extends keyof ClientEnvValues>(
+    key: K,
+    fallback?: ClientEnvValues[K]
+): ClientEnvValues[K] => {
+    if (!CLIENT_ENV[key]) {
+        if (fallback === undefined) {
+            throw new Error(`Missing client environment variable: ${key}`);
+        }
+        return fallback;
+    }
+    return CLIENT_ENV[key];
+};
