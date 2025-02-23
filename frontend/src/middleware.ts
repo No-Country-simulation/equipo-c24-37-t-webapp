@@ -1,15 +1,17 @@
 import {NextRequest, NextResponse} from "next/server";
-import {cookies} from "next/headers";
-import {serverEnv} from "@/config/env";
 import Auth from "@/lib/auth";
 
 const publicPages = [Auth.pages.login, Auth.pages.sign_up];
 export async function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname;
-    const cookiesStore = await cookies();
-    const session = cookiesStore.get(serverEnv('COOKIE_NAME', 'session'))
+    const session = await Auth.cookieData();
     if (!publicPages.includes(pathname) && !session) {
         // Redirect to login page if the user is not authenticated
+        return NextResponse.redirect(new URL(Auth.pages.login,request.url));
+    }
+    if(publicPages.includes(pathname) && session) {
+        // Redirect to dashboard if the user is authenticated
+        return NextResponse.redirect(new URL(Auth.pages.app,request.url));
     }
     return NextResponse.next();
 }

@@ -3,6 +3,7 @@ import { z } from "zod";
 const ServerEnvSchema = z.object({
     JWT_EXPIRE_TIME: z.coerce.number(),
     COOKIE_NAME: z.string(),
+    SECRET: z.string(),
 });
 
 const ClientEnvSchema = z.object({
@@ -16,6 +17,7 @@ function createServerEnv() {
     const serverEnv = {
         JWT_EXPIRE_TIME: process.env.JWT_EXPIRE_TIME,
         COOKIE_NAME: process.env.COOKIE_NAME,
+        SECRET: process.env.SECRET,
     };
 
     const parsedEnv = ServerEnvSchema.safeParse(serverEnv);
