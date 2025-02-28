@@ -80,6 +80,10 @@ public class User implements UserDetails {
         this.password = password;
     }
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
     // Métodos de UserDetails
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
