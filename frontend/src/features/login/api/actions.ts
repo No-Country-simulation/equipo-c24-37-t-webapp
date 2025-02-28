@@ -16,13 +16,13 @@ const AuthCookieConfig: Partial<ResponseCookie> = {
     maxAge: serverEnv('JWT_EXPIRE_TIME') / 1000,
 }
 const requestToken = async (credentials: LoginType) => {
-    return await apiClient.post("/auth/login", credentials)
+    return await apiClient.post("/api/auth/login", credentials)
 }
 
 export async function login({email, password}: z.infer<typeof LoginSchema>) {
     const result = LoginSchema.safeParse({email, password});
     if (!result.success) {
-        return {error: result.error.errors};
+        return {errors: result.error.errors};
     }
 
     // Call to the API
@@ -36,13 +36,9 @@ export async function login({email, password}: z.infer<typeof LoginSchema>) {
         redirect(Auth.pages.app);
     } catch (error) {
         if (error instanceof AxiosError) {
-            if (error.response) {
-                return {error: error.response.data};
-            } else {
-                // @ts-expect-error error is an AxiosError
-                return {error: error.message, errors: error.errors, code: error.code};
-            }
+            // @ts-expect-error error is an AxiosError
+            return {error: error.message, errors: error.errors, code: error.code};
         }
-        return {error: error};
+        return {error: "Unkown error"};
     }
 }

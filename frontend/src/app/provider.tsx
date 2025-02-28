@@ -3,7 +3,7 @@
 import {useState} from "react";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import Auth, {Session} from "@/lib/auth";
-import {useSessionStore} from "@/lib/stores";
+import {Toaster} from "@/components/ui/sonner";
 
 export type AppProviderProps = {
     children: React.ReactNode
@@ -33,6 +33,7 @@ export default function AppProvider({
         <>
             <QueryClientProvider client={queryClient}>
                 {children}
+                <Toaster richColors />
             </QueryClientProvider>
         </>
     )

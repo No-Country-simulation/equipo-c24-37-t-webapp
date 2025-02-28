@@ -5,12 +5,16 @@ import {LoginType} from "@/validations/LoginValidation";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {useLoginForm} from "@/features/login/api/mutations";
 import Auth from "@/lib/auth";
+import {toast} from "sonner";
 
 export default function Login() {
     const form = useLoginForm();
 
-    const onSubmit = (values: LoginType) => {
-        return Auth.login(values);
+    const onSubmit = async (values: LoginType) => {
+        const response = await Auth.login(values);
+        if(response.error){
+            toast.error(response.error);
+        }
     }
 
     return (
