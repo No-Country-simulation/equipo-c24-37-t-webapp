@@ -26,14 +26,16 @@ public class Ticket {
     private LocalDate startDate;
     @Column(nullable = true, length = 12)
     private LocalDate endDate;
+    @Column(nullable = true)
+    private String assignedTo;
 
     @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages = new ArrayList<>();
 
-/*
-        This method when /api/tickets using METHODS POST create a tickets,
-        automatically the attribute startDate get actually date.
- */
+    /*
+            This method when /api/tickets using METHODS POST create a tickets,
+            automatically the attribute startDate get actually date.
+     */
     @PrePersist
     protected void onCreate() {
         this.startDate = LocalDate.now();
@@ -42,7 +44,7 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(Long id, String subject, String priority, String message, String status, LocalDate startDate, LocalDate endDate) {
+    public Ticket(Long id, String subject, String priority, String message, String status, LocalDate startDate, LocalDate endDate, String assignedTo, List<Message> messages) {
         this.id = id;
         this.subject = subject;
         this.priority = priority;
@@ -50,6 +52,8 @@ public class Ticket {
         this.status = status;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.assignedTo = assignedTo;
+        this.messages = messages;
     }
 
     public Long getId() {
@@ -106,5 +110,21 @@ public class Ticket {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public String getAssignedTo() {
+        return assignedTo;
+    }
+
+    public void setAssignedTo(String assignedTo) {
+        this.assignedTo = assignedTo;
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 }
