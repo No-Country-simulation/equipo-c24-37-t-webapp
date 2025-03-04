@@ -12,7 +12,7 @@ export default function LoginPage(){
             </div>
         </section>
         <section className="bg-tertiary flex-1 hidden md:block">
-            <Image src="/Assets/LoginImage.png" alt="imagen" className="size-full" width={400} height={400} />
+            <Image src="/Assets/LoginImage.svg" alt="imagen" className="size-full" width={400} height={400} />
         </section>
     </main>
    )
