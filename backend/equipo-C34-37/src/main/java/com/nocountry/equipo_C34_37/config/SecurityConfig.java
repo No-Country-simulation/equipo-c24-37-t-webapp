@@ -4,6 +4,7 @@ import com.nocountry.equipo_C34_37.config.JwtAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,6 +29,11 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/tickets").hasRole("SUPPORT")
+                        .requestMatchers(HttpMethod.POST, "/api/tickets").authenticated()
+                        .requestMatchers("/api/tickets/{id}/assign").hasRole("SUPPORT")
+                        .requestMatchers("/api/tickets/unassigned").hasRole("SUPPORT")
+                        .requestMatchers("/api/tickets").hasRole("SUPPORT")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
