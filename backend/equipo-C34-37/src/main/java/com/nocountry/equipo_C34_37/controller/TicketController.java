@@ -1,8 +1,7 @@
 package com.nocountry.equipo_C34_37.controller;
 
-import com.nocountry.equipo_C34_37.model.Message;
-import com.nocountry.equipo_C34_37.model.Ticket;
-import com.nocountry.equipo_C34_37.model.User;
+import com.nocountry.equipo_C34_37.dto.TicketDTO;
+import com.nocountry.equipo_C34_37.model.*;
 import com.nocountry.equipo_C34_37.service.MessageService;
 import com.nocountry.equipo_C34_37.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,20 +21,21 @@ public class TicketController {
     private MessageService messageService;
 
     @GetMapping
-    public List<Ticket> getAllTickets(){
+    public List<Ticket> getAllTickets() {
         return ticketService.getAllTickets();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Ticket> getTicketByID(@PathVariable Long id){
+    public ResponseEntity<Ticket> getTicketByID(@PathVariable Long id) {
         return ticketService.getTicketById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Ticket createTicket(@RequestBody Ticket ticket){
-        return ticketService.createTicket(ticket);
+    public ResponseEntity<Ticket> createTicket(@RequestBody Ticket ticket) {
+        Ticket savedTicket = ticketService.createTicket(ticket);
+        return ResponseEntity.ok(savedTicket);
     }
 
     @DeleteMapping("/{id}")
@@ -51,8 +51,8 @@ public class TicketController {
 //    Message
 
     @PostMapping("/{ticketID}/messages")
-    public ResponseEntity<Message> addMessage(@PathVariable Long ticketID, @RequestBody Message message){
-        return ResponseEntity.ok(messageService.addMessageToTicket(ticketID,message));
+    public ResponseEntity<Message> addMessage(@PathVariable Long ticketID, @RequestBody Message message) {
+        return ResponseEntity.ok(messageService.addMessageToTicket(ticketID, message));
     }
 
     @GetMapping("/{ticketId}/messages")
@@ -76,4 +76,25 @@ public class TicketController {
     public List<Ticket> getUnassignedTickets() {
         return ticketService.getUnassignedTickets();
     }
+
+//    Dashboard
+
+    @GetMapping("/dashboard")
+    public List<TicketDTO> getUserTicketsForDashboard() {
+        return ticketService.getTicketsForCurrentUser();
+    }
+
+
+//    Priorities & Status
+
+    @GetMapping("/priorities")
+    public Priority[] getPriorities() {
+        return Priority.values();
+    }
+
+    @GetMapping("/status")
+    public Status[] getStatuses() {
+        return Status.values();
+    }
+
 }

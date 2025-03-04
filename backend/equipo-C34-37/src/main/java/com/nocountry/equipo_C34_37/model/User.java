@@ -102,12 +102,12 @@ public class User implements UserDetails {
     // Métodos de UserDetails
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList(); // No usamos roles en este ejemplo
+        return Collections.emptyList();
     }
 
     @Override
     public String getUsername() {
-        return email; // Usamos el email como nombre de usuario
+        return email;
     }
 
     @Override
