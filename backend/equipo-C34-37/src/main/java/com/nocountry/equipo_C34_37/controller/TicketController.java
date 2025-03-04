@@ -2,6 +2,7 @@ package com.nocountry.equipo_C34_37.controller;
 
 import com.nocountry.equipo_C34_37.model.Message;
 import com.nocountry.equipo_C34_37.model.Ticket;
+import com.nocountry.equipo_C34_37.model.User;
 import com.nocountry.equipo_C34_37.service.MessageService;
 import com.nocountry.equipo_C34_37.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +58,22 @@ public class TicketController {
     @GetMapping("/{ticketId}/messages")
     public ResponseEntity<List<Message>> getMessages(@PathVariable Long ticketId) {
         return ResponseEntity.ok(messageService.getMessagesByTicket(ticketId));
+    }
+
+//    AssignedTo
+
+    @PatchMapping("/{id}/assign")
+    public ResponseEntity<Ticket> assignTicket(@PathVariable Long id) {
+        try {
+            Ticket updatedTicket = ticketService.assignTicket(id);
+            return ResponseEntity.ok(updatedTicket);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @GetMapping("/unassigned")
+    public List<Ticket> getUnassignedTickets() {
+        return ticketService.getUnassignedTickets();
     }
 }

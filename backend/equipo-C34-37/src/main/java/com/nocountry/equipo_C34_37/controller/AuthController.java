@@ -3,6 +3,7 @@ package com.nocountry.equipo_C34_37.controller;
 import com.nocountry.equipo_C34_37.dto.JwtResponse;
 import com.nocountry.equipo_C34_37.dto.LoginRequest;
 import com.nocountry.equipo_C34_37.dto.RegisterRequest;
+import com.nocountry.equipo_C34_37.model.Role;
 import com.nocountry.equipo_C34_37.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +17,9 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
-        authService.register(registerRequest);
+    public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
+        Role defaultRole = Role.USER;
+        authService.register(registerRequest, defaultRole);
         return ResponseEntity.ok("Usuario registrado exitosamente");
     }
 
