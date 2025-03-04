@@ -102,7 +102,7 @@ public class User implements UserDetails {
     // Métodos de UserDetails
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList(); 
+        return Collections.emptyList();
     }
 
     @Override
