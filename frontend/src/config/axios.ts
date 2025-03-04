@@ -12,4 +12,5 @@ const apiClient = axios.create({
         'X-Requested-With': 'XMLHttpRequest',
     },
 });
+
 export default apiClient;

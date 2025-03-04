@@ -22,7 +22,7 @@ const Auth: AuthConfig = {
     cookieData: getCookieData,
     pages: {
         login: '/',
-        sign_up: '/sign_up',
+        sign_up: '/sign-up',
         app: '/app',
     }
 }
