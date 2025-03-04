@@ -2,7 +2,6 @@ package com.nocountry.equipo_C34_37.service;
 
 import com.nocountry.equipo_C34_37.model.Ticket;
 import com.nocountry.equipo_C34_37.repository.TicketRepository;
-import com.nocountry.equipo_C34_37.security.UserDetailsImpl;
 import com.nocountry.equipo_C34_37.security.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,6 +29,9 @@ public class TicketService {
     }
 
     public Ticket createTicket(Ticket ticket) {
+        String email = getAuthenticatedUser();
+        String fullNameWithEmail = userDetails.getFullNameByEmail(email);
+        ticket.setCreatedBy(fullNameWithEmail);
         return ticketRepository.save(ticket);
     }
 
