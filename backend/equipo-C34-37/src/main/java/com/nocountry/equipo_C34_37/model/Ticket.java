@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -15,7 +14,7 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private String subject;
+    private String title;
     @Column(nullable = false, length = 25)
     private String priority;
     @Column(nullable = false, columnDefinition = "TEXT")
@@ -28,6 +27,8 @@ public class Ticket {
     private LocalDate endDate;
     @Column(nullable = true)
     private String assignedTo;
+    @Column(nullable = false)
+    private String createdBy;
 
     @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages = new ArrayList<>();
@@ -44,15 +45,16 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(Long id, String subject, String priority, String message, String status, LocalDate startDate, LocalDate endDate, String assignedTo, List<Message> messages) {
+    public Ticket(Long id, String title, String priority, String message, String status, LocalDate startDate, LocalDate endDate, String assignedTo, String createdBy, List<Message> messages) {
         this.id = id;
-        this.subject = subject;
+        this.title = title;
         this.priority = priority;
         this.message = message;
         this.status = status;
         this.startDate = startDate;
         this.endDate = endDate;
         this.assignedTo = assignedTo;
+        this.createdBy = createdBy;
         this.messages = messages;
     }
 
@@ -64,12 +66,12 @@ public class Ticket {
         this.id = id;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getTitle() {
+        return title;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getPriority() {
@@ -126,5 +128,13 @@ public class Ticket {
 
     public void setMessages(List<Message> messages) {
         this.messages = messages;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 }
