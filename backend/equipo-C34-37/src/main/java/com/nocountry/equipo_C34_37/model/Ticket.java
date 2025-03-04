@@ -3,7 +3,6 @@ package com.nocountry.equipo_C34_37.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,12 +14,14 @@ public class Ticket {
     private Long id;
     @Column(nullable = false)
     private String title;
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 25)
-    private String priority;
+    private Priority priority;
     @Column(nullable = false, columnDefinition = "TEXT")
     private String message;
     @Column(nullable = false, length = 20)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
     @Column(nullable = false, length = 12)
     private LocalDate startDate;
     @Column(nullable = true, length = 12)
@@ -31,7 +32,7 @@ public class Ticket {
     private String createdBy;
 
     @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Message> messages = new ArrayList<>();
+    private List<Message> messages;
 
     /*
             This method when /api/tickets using METHODS POST create a tickets,
@@ -45,7 +46,7 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(Long id, String title, String priority, String message, String status, LocalDate startDate, LocalDate endDate, String assignedTo, String createdBy, List<Message> messages) {
+    public Ticket(Long id, String title, Priority priority, String message, Status status, LocalDate startDate, LocalDate endDate, String assignedTo, String createdBy, List<Message> messages) {
         this.id = id;
         this.title = title;
         this.priority = priority;
@@ -74,11 +75,11 @@ public class Ticket {
         this.title = title;
     }
 
-    public String getPriority() {
+    public Priority getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(Priority priority) {
         this.priority = priority;
     }
 
@@ -90,11 +91,11 @@ public class Ticket {
         this.message = message;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -122,19 +123,19 @@ public class Ticket {
         this.assignedTo = assignedTo;
     }
 
-    public List<Message> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
-    }
-
     public String getCreatedBy() {
         return createdBy;
     }
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 }

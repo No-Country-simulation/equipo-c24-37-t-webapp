@@ -1,5 +1,6 @@
 package com.nocountry.equipo_C34_37.service;
 
+import com.nocountry.equipo_C34_37.dto.TicketDTO;
 import com.nocountry.equipo_C34_37.model.Ticket;
 import com.nocountry.equipo_C34_37.repository.TicketRepository;
 import com.nocountry.equipo_C34_37.security.UserDetailsServiceImpl;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TicketService {
@@ -59,6 +61,27 @@ public class TicketService {
         }
         throw new RuntimeException("Ticket no encontrado");
     }
+
+//    Dashboard
+
+    public List<TicketDTO> getTicketsForCurrentUser() {
+        String email = getAuthenticatedUser(); // Obtiene el email autenticado
+
+        List<Ticket> tickets = ticketRepository.findByCreatedByContaining(email); // Busca por email
+
+        return tickets.stream()
+                .map(ticket -> new TicketDTO(
+                        ticket.getId(),
+                        ticket.getCreatedBy(),
+                        ticket.getTitle(),
+                        ticket.getAssignedTo(),
+                        ticket.getPriority(),
+                        ticket.getStatus(),
+                        ticket.getStartDate()
+                ))
+                .collect(Collectors.toList());
+    }
+
 
     public List<Ticket> getUnassignedTickets() {
         return ticketRepository.findByAssignedToIsNull();
