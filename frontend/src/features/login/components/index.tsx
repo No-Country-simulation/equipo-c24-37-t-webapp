@@ -38,7 +38,7 @@ export default function Login() {
                         <FormMessage/>
                     </FormItem>
                 )}/>
-                <Button type="submit" variant="tertiary">Ingresar</Button>
+                <Button type="submit" variant="tertiary" disabled={form.formState.isSubmitting}>Ingresar</Button>
             </form>
         </Form>
     )

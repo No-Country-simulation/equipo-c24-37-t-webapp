@@ -1,9 +1,10 @@
 "use client"
 
-import {useState} from "react";
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import { QueryClientProvider} from "@tanstack/react-query";
 import Auth, {Session} from "@/lib/auth";
 import {Toaster} from "@/components/ui/sonner";
+import {getQueryClient} from "@/lib/getQueryClient";
+import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 
 export type AppProviderProps = {
     children: React.ReactNode
@@ -13,16 +14,8 @@ export default function AppProvider({
                                         children,
                                         session
                                     }: AppProviderProps) {
-    const [queryClient] = useState(() => {
-        return new QueryClient({
-            defaultOptions: {
-                queries: {
-                    retry: true,
-                    refetchOnWindowFocus: true,
-                },
-            },
-        });
-    })
+
+    const queryClient = getQueryClient();
 
     const setSession = Auth.useSetSessionState();
     if (session) {
@@ -33,7 +26,8 @@ export default function AppProvider({
         <>
             <QueryClientProvider client={queryClient}>
                 {children}
-                <Toaster richColors />
+                <Toaster richColors/>
+                <ReactQueryDevtools />
             </QueryClientProvider>
         </>
     )

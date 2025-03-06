@@ -1,7 +1,7 @@
 "use server"
 
 import {cookies} from "next/headers";
-import {serverEnv} from "@/config/env";
+import {serverEnv} from "@/config/serverEnv";
 import {Session} from "@/lib/auth";
 
 export async function getCookieData(): Promise<Session | null> {

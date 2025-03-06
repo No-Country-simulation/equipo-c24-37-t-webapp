@@ -1,5 +1,6 @@
 import axios from 'axios';
-import {clientEnv} from '@/config/env';
+import Auth from "@/lib/auth";
+import {clientEnv} from "@/config/clientEnv";
 
 const apiClient = axios.create({
     baseURL: clientEnv('API_URL', 'http://localhost:8000'),
@@ -11,6 +12,14 @@ const apiClient = axios.create({
         'Content-Type': 'application/json',
         'X-Requested-With': 'XMLHttpRequest',
     },
+});
+
+apiClient.interceptors.request.use(async (config) => {
+    const session = await Auth.cookieData();
+    if (session) {
+        config.headers.Authorization = `Bearer ${session.token}`;
+    }
+    return config;
 });
 
 export default apiClient;

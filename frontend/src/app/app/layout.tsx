@@ -8,10 +8,12 @@ export default function Layout({children}: Readonly<{ children: ReactNode; }>) {
     return (
         <SidebarProvider>
             <AppSidebar/>
-            <main className="mx-auto flex h-screen w-full max-w-7xl flex-1 flex-col rounded-xl">
+            <main className="flex h-screen w-full flex-1 flex-col rounded-xl">
                 <AppHeader/>
-                <ScrollArea className="flex-1 p-4">
-                    {children}
+                <ScrollArea className="flex-1">
+                    <div className="w-[100vw] h-full p-4 md:w-full">
+                        {children}
+                    </div>
                 </ScrollArea>
             </main>
         </SidebarProvider>
