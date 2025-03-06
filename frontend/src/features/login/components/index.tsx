@@ -6,6 +6,7 @@ import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/
 import {useLoginForm} from "@/features/login/api/mutations";
 import Auth from "@/lib/auth";
 import {toast} from "sonner";
+import {redirect} from "next/navigation";
 
 export default function Login() {
     const form = useLoginForm();
@@ -38,7 +39,11 @@ export default function Login() {
                         <FormMessage/>
                     </FormItem>
                 )}/>
-                <Button type="submit" variant="tertiary" disabled={form.formState.isSubmitting}>Ingresar</Button>
+                <Button type="submit" variant="tertiary" className="mx-auto w-2/3 mt-4">Ingresar</Button>
+                <p className="text-sm text-center font-extralight">
+                    No te has registrado?
+                    <Button variant="link" onClick={()=> redirect(Auth.pages.sign_up)}> Crea tu cuenta </Button>
+                </p>
             </form>
         </Form>
     )
