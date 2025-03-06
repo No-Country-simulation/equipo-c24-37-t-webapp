@@ -12,13 +12,13 @@ export default function MostRecentTickets() {
     const {data: tickets} = useTickets({});
     const mostRecentTickets = useMemo(() => {
         if (!tickets) return [];
-        return tickets.slice(0, 3);
+        return tickets.slice(0, 4);
     }, [tickets]);
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {mostRecentTickets.map(ticket => (
                 <Card key={ticket.id} className="relative w-full">
-                    <Link href={`/app/ticket/${ticket.id}`} className="absolute right-2 top-2" prefetch><ExternalLink/></Link>
+                    <Link href={`/app/tickets/${ticket.id}`} className="absolute right-2 top-2" prefetch><ExternalLink/></Link>
                     <CardHeader className="p-2">
                         <p className="text-md">ID: #{ticket.id}</p>
                         <Separator/>

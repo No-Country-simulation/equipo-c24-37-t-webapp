@@ -3,7 +3,7 @@ import { UseMutationOptions } from '@tanstack/react-query';
 export type ApiFnReturnType<FnType extends (...args: unknown[]) => Promise<unknown>> =
   Awaited<ReturnType<FnType>>;
 
-export type QueryConfig<T extends (...args: unknown[]) => unknown> = Omit<
+export type QueryConfig<T extends (...args: never[]) => unknown> = Omit<
   ReturnType<T>,
   'queryKey' | 'queryFn'
 >;

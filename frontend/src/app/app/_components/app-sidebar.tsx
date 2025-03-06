@@ -12,10 +12,11 @@ import Image from "next/image";
 export default function AppSidebar() {
     return (
         <Sidebar variant="sidebar" collapsible="offcanvas">
-            <SidebarHeader className="mx-auto"><Image src="/vercel.svg" alt="logo" className="size-12"/></SidebarHeader>
+            <SidebarHeader className="mx-auto"><Image src="/vercel.svg" alt="logo" className="size-12" width={48}
+                                                      height={48}/></SidebarHeader>
             <SidebarContent>
                 <SidebarMenu>
-                    <SidebarMenuLinks />
+                    <SidebarMenuLinks/>
                 </SidebarMenu>
             </SidebarContent>
         </Sidebar>

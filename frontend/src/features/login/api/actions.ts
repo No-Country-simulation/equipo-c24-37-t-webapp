@@ -39,7 +39,6 @@ export async function login({email, password}: z.infer<typeof LoginSchema>) {
             return {error: error.message, errors: error.errors, code: error.code};
         }
         return {error: "Unkown error"};
-    } finally {
-        redirect(Auth.pages.app);
     }
+    redirect(Auth.pages.app);
 }
