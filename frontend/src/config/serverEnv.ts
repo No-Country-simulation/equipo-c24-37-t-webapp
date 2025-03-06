@@ -1,16 +1,11 @@
-import { z } from "zod";
+import {z} from "zod";
 
 const ServerEnvSchema = z.object({
     JWT_EXPIRE_TIME: z.coerce.number(),
     COOKIE_NAME: z.string(),
 });
 
-const ClientEnvSchema = z.object({
-    API_URL: z.string(),
-});
-
 type ServerEnvValues = z.infer<typeof ServerEnvSchema>;
-type ClientEnvValues = z.infer<typeof ClientEnvSchema>;
 
 function createServerEnv() {
     const serverEnv = {
@@ -22,23 +17,6 @@ function createServerEnv() {
     if (!parsedEnv.success) {
         throw new Error(
             `Invalid server environment variables: 
-            ${Object.entries(parsedEnv.error.flatten().fieldErrors)
-                .map(([key, value]) => ` - ${key}: ${value}`)
-                .join('\n')}`
-        );
-    }
-    return parsedEnv.data;
-}
-
-function createClientEnv() {
-    const clientEnv = {
-        API_URL: process.env.NEXT_PUBLIC_API_URL,
-    };
-
-    const parsedEnv = ClientEnvSchema.safeParse(clientEnv);
-    if (!parsedEnv.success) {
-        throw new Error(
-            `Invalid client environment variables: 
             ${Object.entries(parsedEnv.error.flatten().fieldErrors)
                 .map(([key, value]) => ` - ${key}: ${value}`)
                 .join('\n')}`
@@ -66,17 +44,3 @@ export const serverEnv = <K extends keyof ServerEnvValues>(
     return SERVER_ENV[key];
 };
 
-// Client-side environment utility
-const CLIENT_ENV = createClientEnv();
-export const clientEnv = <K extends keyof ClientEnvValues>(
-    key: K,
-    fallback?: ClientEnvValues[K]
-): ClientEnvValues[K] => {
-    if (!CLIENT_ENV[key]) {
-        if (fallback === undefined) {
-            throw new Error(`Missing client environment variable: ${key}`);
-        }
-        return fallback;
-    }
-    return CLIENT_ENV[key];
-};
