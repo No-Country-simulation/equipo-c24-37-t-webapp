@@ -45,11 +45,11 @@ export default function TicketsTable() {
                 </TableHeader>
                 <TableBody>
                     {table.getRowModel().rows.map(row => (
-                        <TableRow key={row.original.id} onClick={() => router.push(`/app/ticket/${row.original.id}`)}
+                        <TableRow key={row.original.id} onClick={() => router.push(`/app/tickets/${row.original.id}`)}
                                   className="cursor-pointer">
                             {row.getVisibleCells().map(cell => (
                                 <TableCell key={cell.id}>
-                                    <Link href={`/app/ticket/${row.original.id}`} key={cell.id} prefetch
+                                    <Link href={`/app/tickets/${row.original.id}`} key={cell.id} prefetch
                                           className="hidden"/>
                                     {flexRender(
                                         cell.column.columnDef.cell,
