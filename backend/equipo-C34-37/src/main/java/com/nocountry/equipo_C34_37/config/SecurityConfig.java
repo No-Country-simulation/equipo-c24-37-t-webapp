@@ -37,11 +37,9 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/tickets").hasRole("SUPPORT")
-                        .requestMatchers(HttpMethod.POST, "/api/tickets").authenticated()
-                        .requestMatchers("/api/tickets/{id}/assign").hasRole("SUPPORT")
-                        .requestMatchers("/api/tickets/unassigned").hasRole("SUPPORT")
-                        .requestMatchers("/api/tickets").hasRole("SUPPORT")
+                        .requestMatchers("/api/tickets/**").permitAll()
+                        .requestMatchers("/api/user/**").permitAll()
+//                        .requestMatchers("/api/tickets").hasRole("SUPPORT")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -58,3 +56,12 @@ public class SecurityConfig {
         return config.getAuthenticationManager();
     }
 }
+
+
+
+
+//requestMatchers(HttpMethod.GET, "/api/tickets").hasRole("SUPPORT")
+//                        .requestMatchers(HttpMethod.POST, "/api/tickets").authenticated()
+//                        .requestMatchers("/api/tickets/{id}/assign").hasRole("SUPPORT")
+//                        .requestMatchers("/api/tickets/unassigned").hasRole("SUPPORT")
+//

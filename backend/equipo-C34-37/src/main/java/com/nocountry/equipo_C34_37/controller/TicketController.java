@@ -26,7 +26,7 @@ public class TicketController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Ticket> getTicketByID(@PathVariable Long id) {
+    public ResponseEntity<Ticket> getTicketByID(@PathVariable("id") Long id) {
         return ticketService.getTicketById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -39,7 +39,7 @@ public class TicketController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTicket(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTicket(@PathVariable("id") Long id) {
         if (!ticketService.getTicketById(id).isPresent()) {
             return ResponseEntity.notFound().build();
         }
@@ -51,19 +51,19 @@ public class TicketController {
 //    Message
 
     @PostMapping("/{ticketID}/messages")
-    public ResponseEntity<Message> addMessage(@PathVariable Long ticketID, @RequestBody Message message) {
+    public ResponseEntity<Message> addMessage(@PathVariable("id") Long ticketID, @RequestBody Message message) {
         return ResponseEntity.ok(messageService.addMessageToTicket(ticketID, message));
     }
 
     @GetMapping("/{ticketId}/messages")
-    public ResponseEntity<List<Message>> getMessages(@PathVariable Long ticketId) {
+    public ResponseEntity<List<Message>> getMessages(@PathVariable("id") Long ticketId) {
         return ResponseEntity.ok(messageService.getMessagesByTicket(ticketId));
     }
 
 //    AssignedTo
 
     @PatchMapping("/{id}/assign")
-    public ResponseEntity<Ticket> assignTicket(@PathVariable Long id) {
+    public ResponseEntity<Ticket> assignTicket(@PathVariable("id") Long id) {
         try {
             Ticket updatedTicket = ticketService.assignTicket(id);
             return ResponseEntity.ok(updatedTicket);
