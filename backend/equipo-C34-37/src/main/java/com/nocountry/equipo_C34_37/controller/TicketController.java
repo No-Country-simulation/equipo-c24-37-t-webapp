@@ -1,5 +1,6 @@
 package com.nocountry.equipo_C34_37.controller;
 
+import com.nocountry.equipo_C34_37.dto.CardDTO;
 import com.nocountry.equipo_C34_37.dto.TicketDTO;
 import com.nocountry.equipo_C34_37.model.*;
 import com.nocountry.equipo_C34_37.service.MessageService;
@@ -97,4 +98,11 @@ public class TicketController {
         return Status.values();
     }
 
+
+//    CardsDTO
+
+    @GetMapping("/cards")
+    public List<CardDTO>getUserTicketsForCard(){
+        return ticketService.getUserTicketsForCards();
+    }
 }

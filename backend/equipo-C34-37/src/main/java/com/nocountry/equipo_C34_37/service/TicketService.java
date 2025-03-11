@@ -1,5 +1,6 @@
 package com.nocountry.equipo_C34_37.service;
 
+import com.nocountry.equipo_C34_37.dto.CardDTO;
 import com.nocountry.equipo_C34_37.dto.TicketDTO;
 import com.nocountry.equipo_C34_37.model.Ticket;
 import com.nocountry.equipo_C34_37.repository.TicketRepository;
@@ -94,6 +95,26 @@ public class TicketService {
         } else {
             return principal.toString();
         }
+    }
+
+
+//    Card DTO
+
+
+    public List<CardDTO> getUserTicketsForCards(){
+        String email = getAuthenticatedUser();
+        List<Ticket> tickets = ticketRepository.findByCreatedByContaining(email);
+
+        return tickets.stream()
+                .map(ticket -> new CardDTO(
+                        ticket.getId(),
+                        ticket.getTitle(),
+                        ticket.getPriority(),
+                        ticket.getStatus(),
+                        ticket.getAssignedTo(),
+                        ticket.getStartDate()
+                ))
+                .collect(Collectors.toList());
     }
 }
 
