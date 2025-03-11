@@ -3,7 +3,7 @@ import {LoginSchema, LoginType} from "@/validations/LoginValidation";
 import {z} from "zod";
 import {cookies} from "next/headers";
 import {ResponseCookie} from "next/dist/compiled/@edge-runtime/cookies";
-import {serverEnv} from "@/config/env";
+import {serverEnv} from "@/config/serverEnv";
 import apiClient from "@/config/axios";
 import {AxiosError} from "axios";
 import {redirect} from "next/navigation";
@@ -33,7 +33,6 @@ export async function login({email, password}: z.infer<typeof LoginSchema>) {
         const cookiesStore = await cookies();
         cookiesStore.set('session', JSON.stringify(response.data), AuthCookieConfig);
         // Redirect to the dashboard
-        redirect(Auth.pages.app);
     } catch (error) {
         if (error instanceof AxiosError) {
             // @ts-expect-error error is an AxiosError
@@ -41,4 +40,5 @@ export async function login({email, password}: z.infer<typeof LoginSchema>) {
         }
         return {error: "Unkown error"};
     }
+    redirect(Auth.pages.app);
 }

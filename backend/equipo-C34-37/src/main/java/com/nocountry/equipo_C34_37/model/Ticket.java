@@ -3,7 +3,7 @@ package com.nocountry.equipo_C34_37.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "tickets")
@@ -13,23 +13,31 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private String subject;
-    @Column(nullable = false)
-    private String priority;
-    @Column(nullable = false)
+    private String title;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 25)
+    private Priority priority;
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String message;
-    @Column(nullable = false)
-    private String status;
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
+    @Enumerated(EnumType.STRING)
+    private Status status;
+    @Column(nullable = false, length = 12)
     private LocalDate startDate;
-    @Column(nullable = true)
+    @Column(nullable = true, length = 12)
     private LocalDate endDate;
+    @Column(nullable = true)
+    private String assignedTo;
+    @Column(nullable = false)
+    private String createdBy;
 
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Message> messages;
 
-/*
-        This method when /api/tickets using METHODS POST create a tickets,
-        automatically the attribute startDate get actually date.
- */
+    /*
+            This method when /api/tickets using METHODS POST create a tickets,
+            automatically the attribute startDate get actually date.
+     */
     @PrePersist
     protected void onCreate() {
         this.startDate = LocalDate.now();
@@ -38,14 +46,17 @@ public class Ticket {
     public Ticket() {
     }
 
-    public Ticket(Long id, String subject, String priority, String message, String status, LocalDate startDate, LocalDate endDate) {
+    public Ticket(Long id, String title, Priority priority, String message, Status status, LocalDate startDate, LocalDate endDate, String assignedTo, String createdBy, List<Message> messages) {
         this.id = id;
-        this.subject = subject;
+        this.title = title;
         this.priority = priority;
         this.message = message;
         this.status = status;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.assignedTo = assignedTo;
+        this.createdBy = createdBy;
+        this.messages = messages;
     }
 
     public Long getId() {
@@ -56,19 +67,19 @@ public class Ticket {
         this.id = id;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getTitle() {
+        return title;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getPriority() {
+    public Priority getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(Priority priority) {
         this.priority = priority;
     }
 
@@ -80,11 +91,11 @@ public class Ticket {
         this.message = message;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -102,5 +113,29 @@ public class Ticket {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public String getAssignedTo() {
+        return assignedTo;
+    }
+
+    public void setAssignedTo(String assignedTo) {
+        this.assignedTo = assignedTo;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 }

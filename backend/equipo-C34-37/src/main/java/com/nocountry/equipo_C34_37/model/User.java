@@ -26,16 +26,23 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     // Constructor vacío (requerido por JPA)
     public User() {}
 
     // Constructor con parámetros
-    public User(String firstName, String lastName, String email, String password) {
+
+
+    public User(Long id, String firstName, String lastName, String email, String password, Role role) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
     // Getters y Setters
@@ -80,15 +87,27 @@ public class User implements UserDetails {
         this.password = password;
     }
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     // Métodos de UserDetails
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList(); // No usamos roles en este ejemplo
+        return Collections.emptyList();
     }
 
     @Override
     public String getUsername() {
-        return email; // Usamos el email como nombre de usuario
+        return email;
     }
 
     @Override
