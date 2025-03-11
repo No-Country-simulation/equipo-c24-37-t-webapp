@@ -50,14 +50,14 @@ public class TicketController {
 
 //    Message
 
-    @PostMapping("/{ticketID}/messages")
-    public ResponseEntity<Message> addMessage(@PathVariable("id") Long ticketID, @RequestBody Message message) {
-        return ResponseEntity.ok(messageService.addMessageToTicket(ticketID, message));
+    @PostMapping("/{id}/messages")
+    public ResponseEntity<Message> addMessage(@PathVariable("id") Long id, @RequestBody Message message) {
+        return ResponseEntity.ok(messageService.addMessageToTicket(id, message));
     }
 
-    @GetMapping("/{ticketId}/messages")
-    public ResponseEntity<List<Message>> getMessages(@PathVariable("id") Long ticketId) {
-        return ResponseEntity.ok(messageService.getMessagesByTicket(ticketId));
+    @GetMapping("/{id}/messages")
+    public ResponseEntity<List<Message>> getMessages(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(messageService.getMessagesByTicket(id));
     }
 
 //    AssignedTo
